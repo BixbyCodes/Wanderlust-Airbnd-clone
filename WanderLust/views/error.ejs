@@ -1,0 +1,42 @@
+<%- layout("./layouts/boilerplate.ejs") %>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h1 class="display-1 text-danger">⚠️</h1>
+                    <h2 class="card-title text-danger">Oops! Something went wrong</h2>
+                    
+                    <% if (typeof error !== 'undefined') { %>
+                        <div class="alert alert-danger mt-3">
+                            <h5>Error Details:</h5>
+                            <p class="mb-0"><%= error.message %></p>
+                        </div>
+                    <% } %>
+                    
+                    <div class="mt-4">
+                        <a href="/listings" class="btn btn-primary me-2">
+                            <i class="fas fa-home"></i> Go to Listings
+                        </a>
+                        <a href="/listings/new" class="btn btn-success me-2">
+                            <i class="fas fa-plus"></i> Create New Listing
+                        </a>
+                        <button onclick="history.back()" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Go Back
+                        </button>
+                    </div>
+                    
+                    <% if (process.env.NODE_ENV === 'development' && typeof error !== 'undefined' && error.stack) { %>
+                        <div class="mt-4">
+                            <details>
+                                <summary class="btn btn-outline-info">Show Stack Trace (Development)</summary>
+                                <pre class="mt-2 p-3 bg-light text-start"><%= error.stack %></pre>
+                            </details>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

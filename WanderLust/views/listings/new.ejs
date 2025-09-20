@@ -1,0 +1,89 @@
+<%- layout("./layouts/boilerplate.ejs") %>
+<div class="row">
+    <div class="col-8 offset-2">
+        <br><br><br>
+    <h3>Create A New List</h3>
+    
+    <% if (typeof errors !== 'undefined' && Object.keys(errors).length > 0) { %>
+        <div class="alert alert-danger" role="alert">
+            <h6>Please fix the following errors:</h6>
+            <ul class="mb-0">
+                <% for (let field in errors) { %>
+                    <li><%= errors[field] %></li>
+                <% } %>
+            </ul>
+        </div>
+    <% } %>
+    
+    <form method="POST" action="/listings" class="needs-validation">
+        <div class="mb-3">
+        <label for="title" class="form-label">Title *</label>
+        <input name="listing[title]" placeholder="Enter a valid title (3-100 characters)" type="text" class="form-control"
+        value="<%= typeof listing !== 'undefined' ? listing.title : '' %>"
+        required 
+        />
+        <div class="form-text">Title must be between 3-100 characters</div>
+        <% if (typeof errors !== 'undefined' && errors.title) { %>
+            <div class="invalid-feedback d-block text-danger"><%= errors.title %></div>
+        <% } %>
+    </div>
+        <br><div class="mb-3">
+            <label for="description" class="form-label">Description *</label>
+         <textarea name="listing[description]" class="form-control" required placeholder="Enter a detailed description (minimum 50 words)" rows="4"><%= typeof listing !== 'undefined' ? listing.description : '' %></textarea>
+         <div class="form-text">Description must contain at least 50 words</div>
+         <% if (typeof errors !== 'undefined' && errors.description) { %>
+            <div class="invalid-feedback d-block text-danger"><%= errors.description %></div>
+        <% } %>
+        </div>
+        <br>
+
+        <div class="mb-3">
+             <label for="image" class="form-label">Image URL</label>
+         <input name="listing[image]" placeholder="https://example.com/image.jpg (optional)" type="url" class="form-control" 
+         value="<%= typeof listing !== 'undefined' ? listing.image : '' %>">
+         <div class="form-text">Enter a valid image URL (optional - default image will be used if empty)</div>
+         <% if (typeof errors !== 'undefined' && errors.image) { %>
+            <div class="invalid-feedback d-block text-danger"><%= errors.image %></div>
+        <% } %>
+        <br>
+        </div>
+        <div class="row">
+        <div class="mb-3 col-md-4">
+             <label for="price" class="form-label">Price (₹) *</label>
+         <input name="listing[price]" placeholder="1200" type="number" class="form-control" 
+         value="<%= typeof listing !== 'undefined' ? listing.price : '' %>"
+         min="1" max="1000000"
+         required >
+         <div class="form-text">Price must be between ₹1 - ₹10,00,000</div>
+         <% if (typeof errors !== 'undefined' && errors.price) { %>
+            <div class="invalid-feedback d-block text-danger"><%= errors.price %></div>
+        <% } %>
+        <br></div>
+        <div class="mb-3 col-md-8" >
+               <label for="country" class="form-label">Country *</label>
+         <input name="listing[country]" placeholder="India" class="form-control" 
+         value="<%= typeof listing !== 'undefined' ? listing.country : '' %>"
+         required >
+         <div class="form-text">Enter a valid country name (letters only)</div>
+         <% if (typeof errors !== 'undefined' && errors.country) { %>
+            <div class="invalid-feedback d-block text-danger"><%= errors.country %></div>
+        <% } %>
+        </div>
+    </div>
+        <br>
+        <div class="mb-3">
+            <label for="location" class="form-label">Location *</label>
+         <input name="listing[location]" placeholder="Jaipur" type="text" class="form-control" 
+         value="<%= typeof listing !== 'undefined' ? listing.location : '' %>"
+         required >
+         <div class="form-text">Enter the city or area name</div>
+         <% if (typeof errors !== 'undefined' && errors.location) { %>
+            <div class="invalid-feedback d-block text-danger"><%= errors.location %></div>
+        <% } %>
+        </div>
+        <br>
+<button class="btn btn-dark add-btn">Add</button>
+
+    </form>
+    </div>
+</div>
