@@ -31,4 +31,26 @@ const validateObjectId = (req, res, next) => {
     next();
 };
 
-module.exports = { objectIdSchema, validateObjectId };
+// Validation middleware for reviewId parameter
+const validateReviewId = (req, res, next) => {
+    const { error } = objectIdSchema.validate(req.params.reviewId);
+    
+    if (error) {
+        const isApiRequest = req.originalUrl.startsWith('/api/') || req.headers.accept?.includes('application/json');
+        
+        if (isApiRequest) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid Review ID format"
+            });
+        } else {
+            return res.status(400).render("error.ejs", { 
+                error: { message: "Invalid Review ID format" } 
+            });
+        }
+    }
+    
+    next();
+};
+
+module.exports = { objectIdSchema, validateObjectId, validateReviewId };
