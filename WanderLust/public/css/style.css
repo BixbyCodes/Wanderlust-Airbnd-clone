@@ -104,3 +104,60 @@ body {
     border : none !important;
 }
 
+/* Star rating widget */
+.star-rating{
+    display: inline-flex;
+    gap: 0.25rem;
+    align-items: center;
+}
+.star-rating input[type="radio"]{
+    display: none;
+}
+.star-rating label{
+    cursor: pointer;
+    font-size: 1.4rem;
+    color: #ccc; /* default gray */
+    transition: color 0.15s ease-in-out, transform 0.15s ease-in-out;
+}
+.star-rating label:hover{
+    transform: scale(1.05);
+}
+.star-rating input[type="radio"]:checked ~ label{
+    color: #ccc; /* reset after checked element for reversed order */
+}
+/* We use normal LTR order; highlight stars up to the checked one using sibling selection trick */
+.star-rating label.active,
+.star-rating label.filled{
+    color: #ffb400; /* gold */
+}
+
+
+/* Auth pages */
+.auth-container{
+    min-height: calc(100vh - 8rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.auth-card{
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.auth-title{
+    text-align: center;
+}
+
+.btn-brand{
+    background-color:#fe424d !important;
+    color: #fff !important;
+    border: none !important;
+}
+

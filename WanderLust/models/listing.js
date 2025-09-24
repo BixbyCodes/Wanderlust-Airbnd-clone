@@ -37,6 +37,11 @@ const listingSchema = new Schema({
     required: true,
     trim: true,
   },
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
 });
 listingSchema.post("findOneAndDelete", async function (listing) {
   if (listing) {

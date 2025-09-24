@@ -15,7 +15,7 @@
         </div>
     <% } %>
     
-    <form method="POST" action="/listings" class="needs-validation">
+    <form method="POST" action="/listings" class="needs-validation" enctype="multipart/form-data">
         <div class="mb-3">
         <label for="title" class="form-label">Title *</label>
         <input name="listing[title]" placeholder="Enter a valid title (3-100 characters)" type="text" class="form-control"
@@ -41,11 +41,16 @@
              <label for="image" class="form-label">Image URL</label>
          <input name="listing[image]" placeholder="https://example.com/image.jpg (optional)" type="url" class="form-control" 
          value="<%= typeof listing !== 'undefined' ? listing.image : '' %>">
-         <div class="form-text">Enter a valid image URL (optional - default image will be used if empty)</div>
+         <div class="form-text">You can paste an image URL OR upload a file below.</div>
          <% if (typeof errors !== 'undefined' && errors.image) { %>
             <div class="invalid-feedback d-block text-danger"><%= errors.image %></div>
         <% } %>
         <br>
+        </div>
+        <div class="mb-3">
+          <label for="imageFile" class="form-label">Upload Image (optional)</label>
+          <input type="file" id="imageFile" name="imageFile" accept="image/*" class="form-control" />
+          <div class="form-text">Max 5MB. Allowed: JPG, PNG, WEBP, GIF</div>
         </div>
         <div class="row">
         <div class="mb-3 col-md-4">

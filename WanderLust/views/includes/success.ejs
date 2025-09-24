@@ -1,0 +1,18 @@
+<% /*
+  Partial: includes/success.ejs
+  Purpose: Render Bootstrap success alerts from res.locals.success (set via connect-flash)
+  How it works: req.flash('success', message) stores a one-time message in session.
+                Middleware exposes it as res.locals.success (array). We iterate and show alerts.
+*/ %>
+<% if (Array.isArray(success) && success.length) { %>
+  <% success.forEach(function(msg){ %>
+    <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+      <strong>Success!</strong> <%= msg %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% }) %>
+<% } %>
+
+
+
+

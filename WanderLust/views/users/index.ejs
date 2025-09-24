@@ -1,0 +1,15 @@
+<%- layout("./layouts/boilerplate.ejs") %>
+<h3>Users</h3>
+<ul class="list-group">
+  <% users.forEach(function(u){ %>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <span><%= u.username %> (<%= u.email %>)</span>
+      <a class="btn btn-sm btn-outline-dark" href="/users/<%= u._id %>">View</a>
+    </li>
+  <% }) %>
+  <% if (!users.length) { %>
+    <li class="list-group-item">No users found.</li>
+  <% } %>
+</ul>
+
+

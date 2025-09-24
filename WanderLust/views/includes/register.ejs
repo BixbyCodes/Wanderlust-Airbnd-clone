@@ -1,0 +1,23 @@
+<%- layout("./layouts/boilerplate.ejs") %> <% /* Use the main site layout for header/footer */ %>
+<div class="auth-container">
+  <div class="auth-card">
+    <h3 class="auth-title mb-4">Create your account</h3>
+    <form action="/register" method="POST"> <% /* Send registration data to /register (POST) */ %>
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" id="username" name="username" class="form-control" required /> <% /* Username to create */ %>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" name="email" class="form-control" required /> <% /* Email for the account */ %>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password" class="form-control" required /> <% /* Password (will be hashed) */ %>
+      </div>
+      <button class="btn btn-brand w-100" type="submit">Create Account</button> <% /* Submit the form */ %>
+    </form>
+    <p class="mt-3 text-center">Already have an account? <a href="/login">Login</a></p>
+  </div>
+</div>
+

@@ -1,0 +1,18 @@
+<% /*
+  Partial: includes/error.ejs
+  Purpose: Render Bootstrap error alerts from res.locals.error (set via connect-flash)
+  How it works: req.flash('error', message) stores a one-time message in session.
+                Middleware exposes it as res.locals.error (array). We iterate and show alerts.
+*/ %>
+<% if (Array.isArray(error) && error.length) { %>
+  <% error.forEach(function(msg){ %>
+    <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+      <strong>Error!</strong> <%= msg %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% }) %>
+<% } %>
+
+
+
+
