@@ -1,6 +1,6 @@
 {
   "engines": {
-    "node": "22.x"
+    "node": "20.x"
   },
   "name": "mjaor-project",
   "version": "1.0.0",
