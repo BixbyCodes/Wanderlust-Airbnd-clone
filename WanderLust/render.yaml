@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: wanderlust-app
+    env: node
+    # If this file is at the repository root and your app lives in the WanderLust/ folder,
+    # keep rootDir as shown below. If your repository root IS the WanderLust folder,
+    # change rootDir to ".".
+    rootDir: WanderLust
+    buildCommand: npm install
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Add ATLASDB_URL in Render Dashboard -> Environment. Do not commit secrets here.
