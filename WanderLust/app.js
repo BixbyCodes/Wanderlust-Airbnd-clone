@@ -111,7 +111,7 @@ app.use((req, res, next) => {
 });
 
 // Home route
-app.get("/", (req, res) => {
+app.get("/listings", (req, res) => {
     res.send("Server is up and running!");
 
 });
