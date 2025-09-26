@@ -6,8 +6,8 @@
 </div>
 
 <div class="row justify-content-center mt-3">
-  <div class="card col-6 offset-1 showw-card listing-card">
-    <img src="<%= listing.image %>" class="card-img-top show-img">
+  <div class="card col-12 col-md-10 col-lg-8 col-xxl-7 mx-auto p-0 listing-card">
+    <img src="<%= listing.image %>" class="card-img-top img-fluid" alt="<%= listing.title %>">
     <div class="card-body">
       <p class="card-text">
         
@@ -17,7 +17,7 @@
 </div>
 
 <div class="row justify-content-center mt-3">
-  <div class="col-8">
+  <div class="col-12 col-md-10 col-lg-8 col-xxl-7">
     <ul>
       <li><%= listing.description %></li>
       <li>&#8377;<%= listing.price.toLocaleString("en-IN") %></li>
@@ -40,7 +40,7 @@
 </div>
 
 <div class="row justify-content-center mt-4">
-  <div class="col-8">
+  <div class="col-12 col-md-10 col-lg-8 col-xxl-7">
     <hr>
     <h4>Leave A Review</h4>
     <% if (typeof error !== 'undefined' && error && error.length) { %>
@@ -81,7 +81,7 @@
     <p><b>All Reviews</b></p>
     <div class="row g-3">
       <% for (let review of listing.reviews) { %>
-        <div class="col-md-6 col-lg-4">
+        <div class="col-12 col-sm-6 col-lg-4">
           <div class="card h-100">
             <div class="card-body">
               <h5 class="card-title"><%= review.author ? review.author.username : 'User' %></h5>
@@ -107,52 +107,3 @@
         </div>
       <% } %>
     </div>
-  </div>
-</div>
-
-
-
-
-
-<script>
-// Simple star rating interactivity: highlight filled stars up to the selected value
-(function(){
-  const container = document.getElementById('starRating');
-  if (!container) return;
-  const labels = Array.from(container.querySelectorAll('label'));
-  const inputs = Array.from(container.querySelectorAll('input[type="radio"]'));
-
-  function setFilled(value){
-    labels.forEach(function(label){
-      const v = Number(label.getAttribute('data-value'));
-      if (v <= value) {
-        label.classList.add('filled');
-      } else {
-        label.classList.remove('filled');
-      }
-    });
-  }
-
-  // Initialize with default checked
-  const checked = container.querySelector('input[type="radio"]:checked');
-  setFilled(checked ? Number(checked.value) : 3);
-
-  labels.forEach(function(label){
-    label.addEventListener('mouseenter', function(){
-      setFilled(Number(label.getAttribute('data-value')));
-    });
-    label.addEventListener('click', function(){
-      const val = Number(label.getAttribute('data-value'));
-      const input = container.querySelector('input[value="' + val + '"]');
-      if (input) input.checked = true;
-      setFilled(val);
-    });
-  });
-
-  container.addEventListener('mouseleave', function(){
-    const c = container.querySelector('input[type="radio"]:checked');
-    setFilled(c ? Number(c.value) : 0);
-  });
-})();
-</script>
-</div>
