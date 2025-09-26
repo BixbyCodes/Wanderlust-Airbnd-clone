@@ -1,4 +1,3 @@
-// Core imports for server, database, views, sessions, flash messages, and auth
 const express = require("express");
 const app = express(); // create our Express app instance
 const mongoose = require("mongoose"); // MongoDB ODM
@@ -8,9 +7,9 @@ const ejsMate = require("ejs-mate"); // EJS layouts/partials
 const session = require("express-session"); // session middleware
 const flash = require("connect-flash"); // flash message middleware
 const passport = require("passport"); // auth middleware
+const LocalStrategy = require("passport-local"); // local username/password strategy
 
 require("dotenv").config();
-const LocalStrategy = require("passport-local"); // local username/password strategy
 const User = require("./models/user.js");
 // Import route files
 const listingRoutes = require("./routes/listing.js");
@@ -18,21 +17,20 @@ const reviewRoutes = require("./routes/review.js");
 const authRoutes = require("./routes/auth.js");
 const userRoutes = require("./routes/users.js");
 // ...existing code...
-
-// ...existing code...
 // Import middleware
 const errorHandler = require("./middleware/errorHandler.js"); // generic error handler
 const notFound = require("./middleware/notFound.js"); // 404 handler
+// Import controllers
+const listingController = require("./controllers/listingController.js");
 
 // MongoDB connection URL
-// const MONGO_URL = "mongodb://127.0.0.1:27017/wanderLust"; // database connection string
-let dbUrl = process.env.ATLASDB_URL || "mongodb://127.0.0.1:27017/wanderLust";
+const MONGO_URL = "mongodb://127.0.0.1:27017/wanderLust"; // database connection string
+let dbUrl = process.env.ATLASDB_URL || MONGO_URL;
 if (!process.env.ATLASDB_URL) {
     console.warn(
         "ATLASDB_URL not set; falling back to local MongoDB at mongodb://127.0.0.1:27017/wanderLust"
     );
 }
-
 // Ensure a database name is present in the URI; if missing, default to '/wanderLust'
 try {
     if (dbUrl.startsWith("mongodb")) {
@@ -58,35 +56,32 @@ try {
 }
 
 main()
-.then(() => {
-    console.log("Connected to DB");
-    const PORT = process.env.PORT || 8000;
-    app.listen(PORT, () => {
-        console.log(`Server is listening on port ${PORT}`);
+    .then(() => {
+        console.log("Connected to DB");
+        const PORT = process.env.PORT || 8000;
+        app.listen(PORT, () => {
+            console.log(`Server is listening on port ${PORT}`);
+        });
+    })
+    .catch((err) => {
+        console.error("Connection error:", err);
     });
-})
-.catch((err) => {
-    console.error("Connection error:", err);
-});
 
 async function main() {
     await mongoose.connect(dbUrl);
-
-
-
-    
 }
+
 // Configure Express app settings
-app.set("view engine" , "ejs"); // use EJS for templates
-app.set("views",path.join(__dirname,"views")); // set views directory
-app.use(express.urlencoded({extended: true})); // parse form data from POST
+app.set("view engine", "ejs"); // use EJS for templates
+app.set("views", path.join(__dirname, "views")); // set views directory
+app.use(express.urlencoded({ extended: true })); // parse form data from POST
 app.use(methodOverride("_method")); // allow PUT/DELETE via ?_method
-app.engine("ejs" ,ejsMate); // enable layouts/partials in EJS
-app.use(express.static(path.join(__dirname,"/public"))); // serve static assets
+app.engine("ejs", ejsMate); // enable layouts/partials in EJS
+app.use(express.static(path.join(__dirname, "/public"))); // serve static assets
 const sessionOptions = {
-    secret : "mysupersecretcode",
-    resave : false,
-    saveUninitialized : true,
+    secret: "mysupersecretcode",
+    resave: false,
+    saveUninitialized: true,
 };
 
 // Session middleware must come before passport and routes
@@ -110,18 +105,14 @@ app.use((req, res, next) => {
     next();
 });
 
-// Home route
-app.get("/listings", (req, res) => {
-    res.send("Server is up and running!");
-
-});
+// Root route -> render listings index directly
+app.get("/", listingController.index);
 
 // Test route to demonstrate Joi validation (can be removed in production)
 app.get("/test-validation", (req, res) => {
     res.send(`
         <h2>Joi Validation Test</h2>
-        <p>Try these test cases:</p>
-        <ul>
+{{ ... }}
             <li><a href="/listings/invalid-id">Invalid ID format</a></li>
             <li><a href="/listings/507f1f77bcf86cd799439011">Valid ID format (might not exist)</a></li>
         </ul>
