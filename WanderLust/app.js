@@ -9,6 +9,7 @@ const session = require("express-session"); // session middleware
 const flash = require("connect-flash"); // flash message middleware
 const passport = require("passport"); // auth middleware
 
+require("dotenv").config();
 const LocalStrategy = require("passport-local"); // local username/password strategy
 const User = require("./models/user.js");
 // Import route files
@@ -24,18 +25,56 @@ const errorHandler = require("./middleware/errorHandler.js"); // generic error h
 const notFound = require("./middleware/notFound.js"); // 404 handler
 
 // MongoDB connection URL
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderLust"; // database connection string
+// const MONGO_URL = "mongodb://127.0.0.1:27017/wanderLust"; // database connection string
+let dbUrl = process.env.ATLASDB_URL || "mongodb://127.0.0.1:27017/wanderLust";
+if (!process.env.ATLASDB_URL) {
+    console.warn(
+        "ATLASDB_URL not set; falling back to local MongoDB at mongodb://127.0.0.1:27017/wanderLust"
+    );
+}
+
+// Ensure a database name is present in the URI; if missing, default to '/wanderLust'
+try {
+    if (dbUrl.startsWith("mongodb")) {
+        const parsed = new URL(dbUrl);
+        // If pathname is empty or just '/', set default DB name
+        if (!parsed.pathname || parsed.pathname === "/") {
+            parsed.pathname = "/wanderLust";
+            dbUrl = parsed.toString();
+        }
+        // For Atlas clusters, ensure authSource is set to admin if missing
+        if (parsed.hostname.includes("mongodb.net")) {
+            if (!parsed.searchParams.has("authSource")) {
+                parsed.searchParams.set("authSource", "admin");
+                dbUrl = parsed.toString();
+            }
+        }
+        // Mask credentials for logging
+        const masked = `${parsed.protocol}//${parsed.host}${parsed.pathname}`;
+        console.log(`MongoDB target => ${masked}`);
+    }
+} catch (e) {
+    // If URL parsing fails (very old formats), proceed without normalization
+}
 
 main()
 .then(() => {
     console.log("Connected to DB");
+    const PORT = process.env.PORT || 8000;
+    app.listen(PORT, () => {
+        console.log(`Server is listening on port ${PORT}`);
+    });
 })
 .catch((err) => {
     console.error("Connection error:", err);
 });
 
 async function main() {
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(dbUrl);
+
+
+
+    
 }
 // Configure Express app settings
 app.set("view engine" , "ejs"); // use EJS for templates
@@ -103,6 +142,4 @@ app.use(notFound);
 app.use(errorHandler);
 
 // Start the server
-app.listen(8000, () => {
-    console.log("Server is listening on port 8000");
-});
+// Server start moved to run after successful DB connection above
